@@ -22,50 +22,43 @@ is_py34 = (is_py3 and _ver[1] == 4)
 
 from nested_query_string import NestedQueryString, UnsupportedParameterClassException
 
-class EncodeTest(unittest.TestCase):
+class NestedQueryStringTestCase(unittest.TestCase):
+  def assertEqualQueryStrings(self, expected, actual):
+    expectedValues = expected.split("&")
+    actualValues = actual.split("&")
+    self.assertEqual(sorted(expected), sorted(actual))
+
+class EncodeTest(NestedQueryStringTestCase):
   def runTest(self):
     qs = NestedQueryString.encode({'abc': 'def'})
-    self.assertEqual(qs, 'abc=def')
+    self.assertEqualQueryStrings(qs, 'abc=def')
 
-class EncodeNumericTest(unittest.TestCase):
+class EncodeNumericTest(NestedQueryStringTestCase):
   def runTest(self):
     qs = NestedQueryString.encode({'abc': 1})
-    self.assertEqual(qs, 'abc=1')
+    self.assertEqualQueryStrings(qs, 'abc=1')
 
-class EncodeNumericAndStringTest(unittest.TestCase):
+class EncodeNumericAndStringTest(NestedQueryStringTestCase):
   def runTest(self):
     qs = NestedQueryString.encode({'abc': 'def', 'ghi': 1})
-    if is_py33:
-      expected = 'ghi=1&abc=def'
-    else:
-      expected = 'abc=def&ghi=1'
-    self.assertEqual(qs, expected)
+    self.assertEqualQueryStrings(qs, "abc=def&ghi=1")
 
-class EncodeDictTest(unittest.TestCase):
+class EncodeDictTest(NestedQueryStringTestCase):
   def runTest(self):
     qs = NestedQueryString.encode({'abc': {'def': 'ghi', 'jkl': 'mno'}, 'pqr': 'stu'})
+    self.assertEqualQueryStrings(qs, "abc[def]=ghi&abc[jkl]=mno&pqr=stu")
 
-    if is_py2:
-      expected = 'pqr=stu&abc[jkl]=mno&abc[def]=ghi'
-    if is_py32:
-      expected = 'pqr=stu&abc[jkl]=mno&abc[def]=ghi'
-    if is_py33:
-      expected = 'pqr=stu&abc[jkl]=mno&abc[def]=ghi'
-    if is_py34:
-      expected = 'pqr=stu&abc[def]=ghi&abc[jkl]=mno'
-    self.assertEqual(qs, expected)
-
-class EncodeListTest(unittest.TestCase):
+class EncodeListTest(NestedQueryStringTestCase):
   def runTest(self):
     qs = NestedQueryString.encode({'abc': ['def', 'ghi']})
-    self.assertEqual(qs, 'abc[]=def&abc[]=ghi')
+    self.assertEqualQueryStrings(qs, 'abc[]=def&abc[]=ghi')
 
-class EncodeMixedTest(unittest.TestCase):
+class EncodeMixedTest(NestedQueryStringTestCase):
   def runTest(self):
     qs = NestedQueryString.encode({'abc': ['def', {'ghi': 'jkl'}]})
-    self.assertEqual(qs, 'abc[]=def&abc[][ghi]=jkl')
+    self.assertEqualQueryStrings(qs, 'abc[]=def&abc[][ghi]=jkl')
 
-class EncodeExceptionTest(unittest.TestCase):
+class EncodeExceptionTest(NestedQueryStringTestCase):
   def runTest(self):
     with self.assertRaises(UnsupportedParameterClassException):
       NestedQueryString.encode({'abc': EncodeExceptionTest})
