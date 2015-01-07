@@ -11,6 +11,14 @@ is_py2 = (_ver[0] == 2)
 #: Python 3.x?
 is_py3 = (_ver[0] == 3)
 
+#: Python 3.2.x
+is_py32 = (is_py3 and _ver[1] == 2)
+
+#: Python 3.3.x
+is_py33 = (is_py3 and _ver[1] == 3)
+
+#: Python 3.4.x
+is_py34 = (is_py3 and _ver[1] == 4)
 
 from nested_query_string import NestedQueryString, UnsupportedParameterClassException
 
@@ -27,7 +35,11 @@ class EncodeNumericTest(unittest.TestCase):
 class EncodeNumericAndStringTest(unittest.TestCase):
   def runTest(self):
     qs = NestedQueryString.encode({'abc': 'def', 'ghi': 1})
-    self.assertEqual(qs, 'abc=def&ghi=1')
+    if is_py33:
+      expected = 'ghi=1&abc=def'
+    else:
+      expected = 'abc=def&ghi=1'
+    self.assertEqual(qs, expected)
 
 class EncodeDictTest(unittest.TestCase):
   def runTest(self):
@@ -35,9 +47,12 @@ class EncodeDictTest(unittest.TestCase):
 
     if is_py2:
       expected = 'pqr=stu&abc[jkl]=mno&abc[def]=ghi'
-    if is_py3:
-      expected = 'pqr=stu&abc[def]=ghi&abc[jkl]=mno'
-
+    if is_py32:
+      expected = 'pqr=stu&abc[jkl]=mno&abc[def]=ghi'
+    if is_py33:
+      expected = 'pqr=stu&abc[jkl]=mno&abc[def]=ghi'
+    if is_py34:
+      expected = 'pqr=stu&abc[jkl]=mno&abc[def]=ghi'
     self.assertEqual(qs, expected)
 
 class EncodeListTest(unittest.TestCase):
