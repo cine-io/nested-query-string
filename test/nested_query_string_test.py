@@ -52,7 +52,7 @@ class EncodeDictTest(unittest.TestCase):
     if is_py33:
       expected = 'pqr=stu&abc[jkl]=mno&abc[def]=ghi'
     if is_py34:
-      expected = 'pqr=stu&abc[jkl]=mno&abc[def]=ghi'
+      expected = 'pqr=stu&abc[def]=ghi&abc[jkl]=mno'
     self.assertEqual(qs, expected)
 
 class EncodeListTest(unittest.TestCase):
