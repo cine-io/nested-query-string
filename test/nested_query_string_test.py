@@ -4,6 +4,14 @@ srcdir = '../nested_query_string'
 sys.path.insert(0, os.path.abspath(os.path.join(testdir, srcdir)))
 import unittest
 
+_ver = sys.version_info
+#: Python 2.x?
+is_py2 = (_ver[0] == 2)
+
+#: Python 3.x?
+is_py3 = (_ver[0] == 3)
+
+
 from nested_query_string import NestedQueryString, UnsupportedParameterClassException
 
 class EncodeTest(unittest.TestCase):
@@ -24,7 +32,13 @@ class EncodeNumericAndStringTest(unittest.TestCase):
 class EncodeDictTest(unittest.TestCase):
   def runTest(self):
     qs = NestedQueryString.encode({'abc': {'def': 'ghi', 'jkl': 'mno'}, 'pqr': 'stu'})
-    self.assertEqual(qs, 'pqr=stu&abc[jkl]=mno&abc[def]=ghi')
+
+    if is_py2:
+      expected = 'pqr=stu&abc[jkl]=mno&abc[def]=ghi'
+    if is_py3:
+      expected = 'pqr=stu&abc[def]=ghi&abc[jkl]=mno'
+
+    self.assertEqual(qs, expected)
 
 class EncodeListTest(unittest.TestCase):
   def runTest(self):
