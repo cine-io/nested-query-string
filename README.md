@@ -24,20 +24,19 @@ NestedQueryString.encode({'abc': ['def', 'ghi']})
 
 # with nested dictionary
 NestedQueryString.encode({'abc': {'def': 'ghi', 'jkl': 'mno'}, 'pqr': 'stu'})
-# => 'pqr=stu&abc[jkl]=mno&abc[def]=ghi'
+# => 'abc[def]=ghi&abc[jkl]=mno&pqr=stu'
 ```
 
-## Gotcha
+## Gotchas
 
-This library doesn't handle stringifing dates or other classes.
-If you're worried about sending unsupported classes as values, surround with a try/except.
+1. The parameters are not guaranteed to be in a specific order.
+* This library doesn't handle stringifing dates or other classes. If you're worried about sending unsupported classes as values, surround with a try/except:
+  ```python
+  import nested_query_string
+  from nested_query_string import NestedQueryString, UnsupportedParameterClassException
 
-```python
-import nested_query_string
-from nested_query_string import NestedQueryString, UnsupportedParameterClassException
-
-try:
-  NestedQueryString.encode({'abc': NestedQueryString})
-except UnsupportedParameterClassException:
-  # handle exception
-```
+  try:
+    NestedQueryString.encode({'abc': NestedQueryString})
+  except UnsupportedParameterClassException:
+    # handle exception
+  ```
