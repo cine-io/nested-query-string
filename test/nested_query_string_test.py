@@ -4,22 +4,6 @@ srcdir = '../nested_query_string'
 sys.path.insert(0, os.path.abspath(os.path.join(testdir, srcdir)))
 import unittest
 
-_ver = sys.version_info
-#: Python 2.x?
-is_py2 = (_ver[0] == 2)
-
-#: Python 3.x?
-is_py3 = (_ver[0] == 3)
-
-#: Python 3.2.x
-is_py32 = (is_py3 and _ver[1] == 2)
-
-#: Python 3.3.x
-is_py33 = (is_py3 and _ver[1] == 3)
-
-#: Python 3.4.x
-is_py34 = (is_py3 and _ver[1] == 4)
-
 from nested_query_string import NestedQueryString, UnsupportedParameterClassException
 
 class NestedQueryStringTestCase(unittest.TestCase):
