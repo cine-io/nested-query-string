@@ -33,8 +33,8 @@ class NestedQueryString:
       return result
     elif class_name == list:
       result = []
-      for v in value:
-        result.append(cls.encode(v, key+'[]'))
+      for i, v in enumerate(value):
+        result.append(cls.encode(v, key+'[{0}]'.format(i)))
       result = '&'.join(result)
       return result
     elif class_name == str:
