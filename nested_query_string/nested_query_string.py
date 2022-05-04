@@ -41,6 +41,8 @@ class NestedQueryString:
       return key + "=" + cls.__escape(value)
     elif class_name == int:
       return key + "=" + str(value)
+    elif class_name == bool:
+      return value
     elif class_name == None:
       return ''
     else:
