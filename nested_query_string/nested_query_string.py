@@ -43,6 +43,8 @@ class NestedQueryString:
       return key + "=" + str(value)
     elif class_name == bool:
       return value
+    elif value is None:
+      return None
     elif class_name == None:
       return ''
     else:
