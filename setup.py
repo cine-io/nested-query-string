@@ -20,6 +20,7 @@ with open('nested_query_string/version.py', 'r') as fd:
 if not __version__:
     raise RuntimeError('Cannot find version information')
 
+
 def data_for(filename):
     with open(filename) as fd:
         content = fd.read()
@@ -27,22 +28,22 @@ def data_for(filename):
 
 
 setup(
-  name="nested_query_string",
-  version=__version__,
-  description='Generate nested query strings similar to rack and node qs',
-  license='MIT',
-  author='Cine.io Engineering',
-  author_email='engineering@cine.io',
-  url='https://github.com/cine-io/nested-query-string',
-  packages=packages,
-  package_data={'': ['LICENSE']},
-  include_package_data=True,
-  install_requires=requires,
-  classifiers=[
-    "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python",
-    "Development Status :: 3 - Alpha",
-    "Intended Audience :: Developers",
-    "Topic :: Internet",
-  ],
+    name="nested_query_string",
+    version=__version__,
+    description='Generate nested query strings similar to rack and node qs',
+    license='MIT',
+    author='Cine.io Engineering',
+    author_email='engineering@cine.io',
+    url='https://github.com/cine-io/nested-query-string',
+    packages=packages,
+    package_data={'': ['LICENSE']},
+    include_package_data=True,
+    install_requires=requires,
+    classifiers=[
+        "License :: OSI Approved :: MIT License",
+        "Programming Language :: Python",
+        "Development Status :: 3 - Alpha",
+        "Intended Audience :: Developers",
+        "Topic :: Internet",
+    ],
 )
