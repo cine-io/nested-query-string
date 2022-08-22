@@ -25,6 +25,12 @@ class EncodeNumericTest(NestedQueryStringTestCase):
         self.assertEqualQueryStrings(qs, 'abc=1')
 
 
+class EncodeFloatTest(NestedQueryStringTestCase):
+    def runTest(self):
+        qs = NestedQueryString.encode({'abc': 12345.12345})
+        self.assertEqualQueryStrings(qs, 'abc=12345.12345')
+
+
 class EncodeNumericAndStringTest(NestedQueryStringTestCase):
     def runTest(self):
         qs = NestedQueryString.encode({'abc': 'def', 'ghi': 1})
