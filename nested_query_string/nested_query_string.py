@@ -49,6 +49,9 @@ class NestedQueryString:
         if class_name == int:
             return key + "=" + str(value)
 
+        if class_name == float:
+            return key + "=" + str(value)
+
         if class_name == bool:
             if value is True:
                 return key + "=" + 'true'
